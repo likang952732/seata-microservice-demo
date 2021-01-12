@@ -1,0 +1,87 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: account-service
+
+  cloud:
+    nacos:
+      discovery:
+        register-enabled: true
+        server-addr: 192.168.195.1:8848
+        weight: 1
+        namespace: public
+        group: SEATA_GROUP
+
+#    alibaba:
+#      seata:
+#        tx-service-group: my_test_tx_group
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/seata_account?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+
+
+#seata:
+#  enabled: true
+#  application-id: ${spring.application.name}
+#  tx-service-group: ${spring.application.name}-group
+#  enable-auto-data-source-proxy: true
+#  config:
+#    type: nacos
+#    nacos:
+#      namespace:
+#      serverAddr: 192.168.195.1:8848
+#      group: SEATA_GROUP
+#      userName: "nacos"
+#      password: "nacos"
+#  registry:
+#    type: nacos
+#    nacos:
+#      application: seata-server
+#      server-addr: 192.168.195.1:8848
+#      namespace:
+#      userName: "nacos"
+#      password: "nacos"
+
+
+#seata:
+#  application-id: ${spring.application.name}
+#  tx-service-group: ${spring.application.name}_group
+#  registry:
+#    nacos:
+#      namespace:
+#      server-addr: 192.168.195.1:8848
+#    type: nacos
+#  service:
+#    vgroup-mapping:
+#      account-service_group: default
+#    grouplist:
+#      default: 127.0.0.1:8091
+
+
+logging:
+  level:
+    io.seata: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+ #Seata 配置项，对应 SeataProperties 类
+seata:
+  application-id: ${spring.application.name} # Seata 应用编号，默认为 ${spring.application.name}
+  tx-service-group: my_account_tx_group # Seata 事务组编号，用于 TC 集群名
+  # 服务配置项，对应 ServiceProperties 类
+  service:
+    # 虚拟组和分组的映射
+    vgroup-mapping:
+      my_test_tx_group: default
+    # 分组和 Seata 服务的映射
+    grouplist:
+      default: 127.0.0.1:8091
